@@ -32,12 +32,34 @@ function renderProducts(filter="all"){
     </article>`).join("");
 }
 
-function chooseSize(id){
-  const p = PRODUCTS.find(x=>x.id===id);
-  const choice = prompt(`Choose size for ${p.name}:\n1 = 100ml (${money(p.prices[100])})\n2 = 10ml (${money(p.prices[10])})`, "1");
-  const ml = choice==="2" ? 10 : choice==="1" ? 100 : null;
-  if(!ml) return;
-  addToCart(p, ml);
+function chooseSize(id) {
+  const product = PRODUCTS.find(p => p.id === id);
+  if (!product) return;
+
+  const card = document.querySelector(`[data-product-id="${id}"]`);
+
+  if (card) {
+    const existing = card.querySelector(".size-options");
+    if (existing) {
+      existing.remove();
+      return;
+    }
+
+    const sizeBox = document.createElement("div");
+    sizeBox.className = "size-options";
+
+    sizeBox.innerHTML = `
+      <button onclick="addToCart('${id}', 100)">
+        100ml — $${product.prices[100]}
+      </button>
+
+      <button onclick="addToCart('${id}', 10)">
+        10ml — $${product.prices[10]}
+      </button>
+    `;
+
+    card.appendChild(sizeBox);
+  }
 }
 
 function addToCart(p, ml){
