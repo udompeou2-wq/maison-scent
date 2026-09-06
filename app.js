@@ -139,7 +139,7 @@ $("#checkoutForm").addEventListener("submit", async e=>{
   }finally{
     btn.disabled=false; btn.textContent="Place order";
   }
-};
+});
 
 renderProducts();
 renderCart();
